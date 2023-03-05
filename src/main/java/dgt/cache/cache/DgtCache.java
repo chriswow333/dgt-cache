@@ -24,7 +24,7 @@ public class DgtCache extends AbstractValueAdaptingCache  {
   private boolean useCaffeineCache;
   
   /**
-   * Redis Cacge
+   * Redis Cache
    */
   private RedisCache redisCache;
 
