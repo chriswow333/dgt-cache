@@ -1,5 +1,6 @@
 package dgt.cache.zdemo;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -28,5 +29,13 @@ public class CacheUtils {
     // String value = multilevelCache.get(key, String.class);
     log.info("info real get : {}", key);
     return "value";
+  }
+
+
+  @CacheEvict(value="dgt-name", key="#key")
+  public void evict(String key) {
+    // String value = multilevelCache.get(key, String.class);
+    log.info("info real get : {}", key);
+    // return "value";
   }
 }

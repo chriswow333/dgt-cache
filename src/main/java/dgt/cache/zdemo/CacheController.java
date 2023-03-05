@@ -28,6 +28,11 @@ public class CacheController {
   public String get() {
      return cacheUtils.get("tt-key");
   }
+
+  @GetMapping("/evict")
+  public void evict() {
+      cacheUtils.evict("tt-key");
+  }
 }
 
 
