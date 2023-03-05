@@ -1,7 +1,9 @@
 package dgt.cache.autoconfigure;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -14,23 +16,50 @@ import dgt.cache.builder.DgtCacheManagerBuilder;
 import dgt.cache.builder.DgtCaffeineCacheBuilder;
 import dgt.cache.builder.DgtRedisCacheBuilder;
 import dgt.cache.cache.DgtCache;
+import dgt.cache.prop.DgtCacheProperties;
 import dgt.cache.prop.DgtCacheProperty;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
+@EnableConfigurationProperties(DgtCacheProperties.class)
 @EnableCaching
+@Slf4j
 public class DgtCacheAutoConfiguration {
   
+
   @Bean
-  public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+  public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory,  DgtCacheProperties dgtCacheProperties) {
 
-    String name = "dgt-name";
+    List<DgtCache> dgtCaches = new ArrayList<>();
 
-    CaffeineCache caffeineCahe = DgtCaffeineCacheBuilder.build(name, new DgtCacheProperty());
-    RedisCache redisCache = DgtRedisCacheBuilder.build(name, redisConnectionFactory, new DgtCacheProperty());
-    
-    DgtCache dgtCache = new DgtCache(true, name, true, redisCache, caffeineCahe);
+    String projectName = dgtCacheProperties.getProjectName();
 
-    return DgtCacheManagerBuilder.build(Arrays.asList(dgtCache));
+    for(DgtCacheProperty dgtCacheProperty:dgtCacheProperties.getProperties()){
+
+      String[] names = dgtCacheProperty.getNames().split(",");
+
+      for(int i = 0; i < names.length; i++){
+        
+        String name = new StringBuilder()
+        .append(projectName)
+        .append(":")
+        .append(names[i])
+        .toString();
+
+        log.info("initial dgt cache, name: {}", name);
+
+        CaffeineCache caffeineCahe = DgtCaffeineCacheBuilder.build(name, dgtCacheProperty);
+        RedisCache redisCache = DgtRedisCacheBuilder.build(name, redisConnectionFactory, dgtCacheProperty);
+ 
+        DgtCache dgtCache = new DgtCache(true, name, true, redisCache, caffeineCahe);
+
+        dgtCaches.add(dgtCache);
+
+      }
+     
+    }
+
+    return DgtCacheManagerBuilder.build(dgtCaches);
   }
 
 }

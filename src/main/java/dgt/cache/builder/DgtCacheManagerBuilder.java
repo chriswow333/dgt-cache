@@ -11,14 +11,11 @@ public class DgtCacheManagerBuilder {
   
   private DgtCacheManagerBuilder(){}
 
-
   public static CacheManager build(List<DgtCache> dgtCaches){
     SimpleCacheManager manager = new SimpleCacheManager();
     manager.setCaches(dgtCaches);
     manager.afterPropertiesSet();
     return manager;
   }
-
-
   
 }

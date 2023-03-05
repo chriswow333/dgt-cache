@@ -13,7 +13,7 @@ public class CacheUtils {
   // @Resource
   // private DgtCache multilevelCache;
   
-  @CachePut(value= "dgt-name", key="#key")
+  @CachePut(value= "repoName:name1", key="#key")
   public String putTest(String key) {
     log.info("info real put :{}", key);
     
@@ -24,7 +24,7 @@ public class CacheUtils {
     return value;
   }
 
-  @Cacheable(value="dgt-name", key="#key")
+  @Cacheable(value="repoName:name1", key="#key")
   public String get(String key) {
     // String value = multilevelCache.get(key, String.class);
     log.info("info real get : {}", key);
@@ -32,7 +32,7 @@ public class CacheUtils {
   }
 
 
-  @CacheEvict(value="dgt-name", key="#key")
+  @CacheEvict(value="repoName:name1", key="#key")
   public void evict(String key) {
     // String value = multilevelCache.get(key, String.class);
     log.info("info real get : {}", key);

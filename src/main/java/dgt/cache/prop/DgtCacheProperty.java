@@ -5,9 +5,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import lombok.Data;
 
 @Data
-@ConfigurationProperties(prefix="dgt.cache")
+// @ConfigurationProperties(prefix="dgt.cache")
 public class DgtCacheProperty {
 
+
+  /**
+   * This names represents name1,name2
+   * we split by "," before auto configuration
+   */
+  private String names;
 
   /**
    * use caffeine cache or not
