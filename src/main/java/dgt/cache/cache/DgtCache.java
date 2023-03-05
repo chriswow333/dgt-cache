@@ -70,13 +70,13 @@ public class DgtCache extends AbstractValueAdaptingCache  {
   @Override
   public void put(Object key, Object value) {
 
-    log.info("set data key:{}, value:{}", key.toString(), value);
+    log.info("put redis data key:{}, value:{}", key.toString(), value);
     
     redisCache.put(key, value);
 
     if (useCaffeineCache) {
+      log.info("put caffeine data key:{}, value:{}", key.toString(), value);
       caffeineCache.put(key, value);
-
       // TODO we can reset caffeine caches to other services.(use redis pub/sub)
 
     }
@@ -91,11 +91,13 @@ public class DgtCache extends AbstractValueAdaptingCache  {
   @Override
   public ValueWrapper putIfAbsent(Object key, Object value) {
 
+    log.info("putIfAbsent redis data key:{}, value:{}", key.toString(), value);
 
     ValueWrapper valueWrapper = redisCache.putIfAbsent(key, value);
 
     // caffeine cache
     if (useCaffeineCache) {
+      log.info("putIfAbsent caffeine data key:{}, value:{}", key.toString(), value);
       caffeineCache.put(key, value);
     }
 
@@ -108,11 +110,13 @@ public class DgtCache extends AbstractValueAdaptingCache  {
    */
   @Override
   public void evict(Object key) {
-      redisCache.evict(key);
-      if (useCaffeineCache) {
-        caffeineCache.put(key, null);
-      }
     
+    log.info("evict redis key:{}", key.toString());
+    redisCache.evict(key);
+    if (useCaffeineCache) {
+      log.info("evict caffeine key:{}", key.toString());
+      caffeineCache.put(key, null);
+    }
   }
 
 
@@ -123,8 +127,10 @@ public class DgtCache extends AbstractValueAdaptingCache  {
 
   @Override
   public void clear() {
+    log.info("clear all redis keys in the same name");
     redisCache.clear();
     if (useCaffeineCache) {
+      log.info("clear caffeine key");
       caffeineCache.clear();
     }
   }
@@ -140,7 +146,7 @@ public class DgtCache extends AbstractValueAdaptingCache  {
       // get date from caffeine first.
         value = caffeineCache.get(key);
         if (Objects.nonNull(value)) {
-            log.debug("lookup caffeine cache, name:{}, key:{}, value:{}", name, key, value.get());
+            log.info("lookup caffeine cache, name:{}, key:{}, value:{}", name, key, value.get());
             return value.get();
         }
       }
@@ -149,10 +155,10 @@ public class DgtCache extends AbstractValueAdaptingCache  {
 
       if (Objects.nonNull(value)) {
 
-        log.debug("lookup redis cache, name:{}, key:{}, value:{}", name, key, value.get());
+        log.info("lookup redis cache, name:{}, key:{}, value:{}", name, key, value.get());
           
         if (useCaffeineCache) {
-          log.debug("set data to caffeine cache, name:{}, key:{}, value:{}", name, key, value.get());
+          log.info("set data to caffeine cache, name:{}, key:{}, value:{}", name, key, value.get());
           ValueWrapper finalValue = value;
           caffeineCache.put(key, finalValue.get());
         }

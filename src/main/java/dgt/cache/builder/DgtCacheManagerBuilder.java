@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.SimpleCacheManager;
 
-import multilevel.cache2.cache.DgtCache;
+import dgt.cache.cache.DgtCache;
 
 public class DgtCacheManagerBuilder {
   

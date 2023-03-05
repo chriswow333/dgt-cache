@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
-import multilevel.cache2.builder.DgtCacheManagerBuilder;
-import multilevel.cache2.builder.DgtCaffeineCacheBuilder;
-import multilevel.cache2.builder.DgtRedisCacheBuilder;
-import multilevel.cache2.cache.DgtCache;
-import multilevel.cache2.prop.DgtCacheProperty;
+import dgt.cache.builder.DgtCacheManagerBuilder;
+import dgt.cache.builder.DgtCaffeineCacheBuilder;
+import dgt.cache.builder.DgtRedisCacheBuilder;
+import dgt.cache.cache.DgtCache;
+import dgt.cache.prop.DgtCacheProperty;
 
 @Configuration
 @EnableCaching

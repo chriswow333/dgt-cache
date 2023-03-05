@@ -11,8 +11,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import multilevel.cache2.cache.DgtRedisCache;
-import multilevel.cache2.prop.DgtCacheProperty;
+import dgt.cache.cache.DgtRedisCache;
+import dgt.cache.prop.DgtCacheProperty;
 
 
 /**
